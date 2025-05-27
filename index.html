@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Evaluating mathematical reasoning of foundation models in visual contexts">
+  <meta name="keywords" content="MathVista, Math Vista">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> MERIT</title>
+
+  <link rel="icon" href="./static/images/merit.png">
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="stylesheet" href="./static/css/leaderboard.css">
+
+  <script type="text/javascript" src="static/js/sort-table.js" defer></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/explorer-index.js"></script>
+  <script src="./static/js/question_card.js"></script>
+
+  <!-- 数学公式 -->
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    };
+  </script>
+  <!--  标题/ 用法：<span class="name"></span>-->
+    <style>
+      :root {
+          --merit-red: rgb(255, 46, 99);
+          --merit-dark: rgb(37, 42, 52);
+          --merit-blue: rgb(8, 217, 214);
+          --merit-gray: rgb(156, 156, 156);
+      }
+      .name {
+          font-variant: small-caps;
+      }
+      .name::before {
+          content: "MERIT";
+          color: transparent;
+      }
+      .name::before {
+          display: inline-block;
+      }
+      .name::before {
+          background: linear-gradient(
+              to right,
+              var(--merit-red) 0%, var(--merit-red) 30%,
+              var(--merit-gray) 30%, var(--merit-gray) 50%,
+              var(--merit-blue) 50%, var(--merit-blue) 72%,
+              var(--merit-red) 72%, var(--merit-red) 81%,
+              var(--merit-gray) 81%, var(--merit-gray) 100%
+          );
+          -webkit-background-clip: text;
+          background-clip: text;
+      }
+  </style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title is-bold">
+            <img src="static/images/merit.png" style="width:1em;vertical-align: middle" alt="Logo"/>
+            <span class="mathvista" style="vertical-align: middle"><span class="name"></span></span>
+            </h1>
+          <h2 class="subtitle is-3 publication-subtitle">
+            Multilingual Semantic Retrieval with<br> Interleaved Multi-Condition Query
+          </h2>
+          <div class="is-size-5 publication-authors">
+<!--            <span class="author-block">Anonymous</span>-->
+<!--          </div>-->
+            <span class="author-block">
+            <a href="">Wei Chow</a><sup style="color:#6fbf73;">1</sup><sup>*</sup>,</span>
+           <span class="author-block">
+             <a href="">Yuan Gao</a><sup style="color:#6fbf73;">1</sup><sup>*</sup>,</span>
+           <span class="author-block">
+             <a href="">Linfeng Li</a><sup style="color:#6fbf73;">1</sup><sup>*</sup>,</span>
+           <span class="author-block">
+             <a href="">Xian Wang</a><sup style="color:#6fbf73">1</sup>,
+           </span>
+           <span class="author-block">
+             <a href="">Qi Xu</a><sup style="color:#6fbf73">1</sup>,
+           </span>
+           <span class="author-block">
+             <a href="">Hang Song</a><sup style="color:#6fbf73">1</sup>,
+           </span>
+            <span class="author-block"><a href="">Lingdong Kong</a><sup style="color:#6fbf73">1</sup>,</span>
+            <br>
+            <span class="author-block"><a href="">Ran Zhou</a><sup style="color:#6fbf73">1</sup>,</span>
+            <span class="author-block"><a href="">Yi Zeng</a><sup style="color:#6fbf73">1</sup>,</span>
+            <span class="author-block"><a href="">Yidong Cai</a><sup style="color:#6fbf73">1</sup>,</span>
+            <span class="author-block"><a href="">Botian Jiang</a><sup style="color:#6fbf73">1</sup>,</span>
+            <span class="author-block"><a href="">Shilin Xu</a><sup style="color:#6fbf73">1</sup>,</span>
+            <span class="author-block"><a href="">Jiajun Zhang</a><sup style="color:#6fbf73">1</sup>,</span>
+            <span class="author-block"><a href="">Minghui Qiu</a><sup style="color:#6fbf73">1</sup>,</span>
+            <br>
+            <span class="author-block"><a href="">Xiangtai Li</a><sup style="color:#6fbf73">1</sup>,</span>
+            <span class="author-block"><a href="">Tianshu Yang</a><sup style="color:#6fbf73">1</sup>,</span>
+            <span class="author-block"><a href="">Siliang Tang</a><sup style="color:#ffac33">2</sup>,</span>
+            <span class="author-block"><a href="https://scholar.google.com/citations?hl=zh-CN&user=lm9s-QgAAAAJ&view_op=list_works&sortby=pubdate">Juncheng Li</a><sup style="color:#ffac33">2</sup></span>
+          </div>
+
+         <div class="is-size-5 publication-authors">
+           <span class="author-block"><sup style="color:#6fbf73;">1</sup>Bytedance,</span>
+           <span class="author-block"><sup style="color:#ffac33">2</sup>Zhejiang University</span><br>
+<!--           <span class="author-block"><sup style="color:#ac33ff">3</sup>Toyota Research Institute</span><br>-->
+           <span class="author-block"><sup>*</sup>Equal Contribution</span><br>
+<!--           <span class="paper-block"><b style="color:#f41c1c">ICLR 2025</b> </span>-->
+        </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="http://arxiv.org/abs/25"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv (Coming Soon)</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code (Coming Soon)</span>
+                  </a>
+              </span>
+              <!-- Dataset Link. -->
+              <span class="link-block">
+                <a href="https://huggingface.co/"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <!-- <i class="far fa-images"></i> -->
+                      <p style="font-size:18px">🤗</p>
+                      <!-- 🔗 -->
+                  </span>
+                  <span>Dataset (Coming Soon)</span>
+                </a>
+              </span>
+              <!-- CKPT Link. -->
+              <span class="link-block">
+                <a href="https://huggingface.co/"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <!-- <i class="far fa-images"></i> -->
+                      <p style="font-size:18px">🤗</p>
+                      <!-- 🔗 -->
+                  </span>
+                  <span>Checkpoint (Coming Soon)</span>
+                </a>
+              </span>
+            </div>
+
+          </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container" style="margin-top: -150px; margin-bottom: -100px;">
+    <div class="columns is-centered m-6">
+      <div class="column is-full has-text-centered content">
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/teaser.png" alt="geometric reasoning" width="84%"/>
+              <p>
+                <b>Illustrative examples</b> of <b>multi-condition semantic retrieval</b>
+                (<img src="static/images/merit.png" style="width:1.0em;vertical-align: middle" alt="Logo"/>
+                <span class="mathvista"><span class="name"></span></span>). We introduce the <br>
+                first <b>interleaved multi-condition semantic retrieval</b> task and benchmark.
+              </p>
+            </div>
+          </div>
+      </div>
+    </div>
+</section>
+
+
+
+<section class="section">
+  <div class="container" style="margin-bottom: 2vh;">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Introduction</h2>
+        <div class="content has-text-justified">
+          <p>
+            <b>Semantic retrieval</b> is crucial for modern applications yet remains underexplored in current research. Existing datasets are limited to <b>single languages</b>, <b>single images</b>, or <b>singular retrieval conditions</b>, often failing to fully exploit the expressive capacity of visual information, as evidenced by maintained performance when images are replaced with captions.
+          </p>
+          <p>
+            However, practical retrieval scenarios frequently involve <b>interleaved multi-condition queries</b> with multiple images. Hence, this paper introduces <img src="static/images/merit.png" style="width:1em;vertical-align: middle" alt="Logo"/>
+                    <span class="mathvista" style="vertical-align: middle"><span class="name"></span></span>, the first multilingual dataset for interleaved multi-condition semantic retrieval, comprising <b>320,000 queries</b> with <b>135,000 products</b> in <b>5 languages</b>, covering <b>7 distinct product categories</b>.
+          </p>
+          <p>
+            Extensive experiments on <img src="static/images/merit.png" style="width:1em;vertical-align: middle" alt="Logo"/>
+                    <span class="mathvista" style="vertical-align: middle"><span class="name"></span></span> identify existing models' critical limitation: focusing solely on <b>global semantic information</b> while neglecting <b>specific conditional elements</b> in queries. Consequently, we propose <img src="static/images/coral.png" style="width:1em;vertical-align: middle" alt="Logo"/><span class="mathvista" style="vertical-align: middle">Coral</span>
+            , a novel fine-tuning framework that adapts pre-trained MLLMs by integrating <b>embedding reconstruction</b> to preserve fine-grained conditional elements and <b>contrastive learning</b> to extract comprehensive global semantics.
+          </p>
+          <p>
+            Experiments demonstrate that <img src="static/images/coral.png" style="width:1em;vertical-align: middle" alt="Logo"/><span class="mathvista" style="vertical-align: middle">Coral</span>
+            achieves a <b>45.9% performance improvement</b> over conventional approaches on <img src="static/images/merit.png" style="width:1em;vertical-align: middle" alt="Logo"/><span class="mathvista" style="vertical-align: middle"><span class="name"></span></span>
+            , with strong generalization capabilities validated across <b>8 established retrieval benchmarks</b>. Collectively, our contributions -- a novel dataset, identification of critical limitations in existing approaches, and an innovative fine-tuning framework -- establish a foundation for future research in interleaved multi-condition semantic retrieval.
+          </p>
+        </div>
+      </div>
+    </div>
+</div>
+</section>
+
+<!-- Prat 1 -->
+<section class="hero is-light is-small">
+  <div class="hero-body has-text-centered">
+  <h1 class="title is-1 mathvista">
+    <img src="static/images/merit.png" style="width:1.5em;vertical-align: middle" alt="Logo"/>
+    <span class="mathvista" style="vertical-align: middle">MERIT Dataset</span>
+  </h1>
+  </div>
+</section>
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Comparison with Previous work</h2>
+          <div class="content has-text-justified">
+            <p>
+              <b>Semantic retrieval</b> is a pivotal task that involves sourcing relevant information from vast data collections to meet specific user requirements. This task has become increasingly important with the advent of AI, as it not only enables precise user recall but also mitigates the risk of inaccuracies in the generated content of <b>Multimodal Large Language Models (MLLM)</b>.
+            </p>
+            <p>
+              However, semantic retrieval remains confined to narrow research scopes, which are limited to <b>single languages</b>, <b>single images</b>, or employing only <b>singular retrieval conditions</b>. Furthermore, many existing works fail to fully exploit the expressive capacity of images, as evidenced by their maintained performance when images are replaced with corresponding captions.
+            </p>
+            <p>
+              Moreover, in practical applications, product retrieval tasks frequently involve <b>interleaved multi-condition queries</b> (e.g., specific patterns and particular texture), with many aspects requiring visual representation through images.
+            </p>
+            <div class="content has-text-centered">
+              <img src="static/images/part1/related.png" alt="algebraic reasoning" width="80%"/>
+              <p>
+                <b>Comparisons among existing datasets</b>. <b>Left:</b> Previous works are limited to single-condition, single image, single-language scenarios.
+                <br><b>Right:</b> Our benchmark enables multilingual semantic retrieval, featuring composite multi-condition queries.
+              </p>
+              <br>
+            </div>
+            <p>
+              <b>Semantic Retrieval</b> is not only a crucial application in real-world scenarios, such as product search and webpage retrieval, but also facilitates content generation (retrieval-augmented generation) and training for reasoning tasks.
+            </p>
+            <p>
+              However, existing semantic retrieval datasets are limited to single languages, single images, or singular retrieval condition, often failing to fully exploit the expressive capacity of visual information as evidenced by maintained performance when images are replaced with captions.
+              <img src="static/images/merit.png" style="width:1em;vertical-align: middle" alt="Logo"/><span class="mathvista" style="vertical-align: middle"><span class="name"></span></span> is the first multilingual dataset for interleaved multi-condition semantic retrieval. Comparison of related works can be seen in below.
+            </p>
+            <div class="content has-text-centered">
+              <img src="static/images/part1/related-work.png" alt="algebraic reasoning" width="80%"/>
+              <p>
+                <b>Summary of multi-modal query retrieval datasets.</b>
+                We compare existing works from aspects including: <sup>1</sup>semantics, <sup>2</sup>multilingual data,
+                <sup>3</sup>multiple types, <sup>4</sup>interleaved queries,
+                <sup>5</sup>multi-attributes queries, and <sup>6</sup>whether
+                manual annotations and filtering are applied.
+              </p>
+              <br>
+            </div>
+          </div>
+        <h2 class="title is-3">Pipeline</h2>
+        <div class="content has-text-justified">
+          <p>
+            Our data collection ensured quality through manual filtering by multilingual annotators and automated filtering. The process included four steps:
+          </p>
+
+          <p>
+            <b>1) Product Selection:</b> We chose popular products from 6 Southeast Asian countries in 5 languages, considering both diversity and quality metrics.
+          </p>
+
+          <p>
+            <b>2) Product Annotation:</b> We developed detailed product attributes through open annotation and statistical analysis to address the gap between limited operational attributes and search system needs.
+          </p>
+
+          <p>
+            <b>3) Query Creation:</b> Using three sampling methods (uniform, attribute-based, and similarity-focused), we built diverse retrieval pairs while supporting expansion to new product categories.
+          </p>
+
+          <p>
+            <b>4) Quality Control:</b> A two-stage filtering process combined automated checks with expert manual review to ensure high dataset quality.
+          </p>
+          <div class="content has-text-centered">
+            <img src="static/images/part1/pipeline.png" alt="algebraic reasoning" width="90%"/>
+            <p>
+              The data annotation pipeline for <img src="static/images/merit.png" style="width:1em;vertical-align: middle" alt="Logo"/><span class="mathvista" style="vertical-align: middle"><span class="name"></span></span>.
+              We ensure data diversity and quality through <b>open-set deduplication</b> and <br>
+              <b>multi-round filtering procedures</b>
+              in <b>4 steps</b>.
+              We first select high-quality products and annotate their attributes,
+              <br>then combine them into query pairs before performing data cleaning to produce <img src="static/images/merit.png" style="width:1em;vertical-align: middle" alt="Logo"/><span class="mathvista" style="vertical-align: middle"><span class="name"></span></span>.
+            </p>
+            <br>
+          </div>
+
+        </div>
+          <h2 class="title is-3">Overview</h2>
+          <div class="content has-text-justified">
+              <p>
+                <b>In practice</b>, product retrieval tasks frequently encompass <b>multiple simultaneous conditions</b> (e.g., specific patterns, precise colors, and particular styles), with many attributes necessitating visual representation through images.
+              </p>
+              <p>
+                However, existing semantic retrieval datasets are limited to <b>single languages</b>, <b>single images</b>, or <b>singular retrieval conditions</b>, often failing to fully exploit the expressive capacity of visual information—a limitation evidenced by maintained performance when images are replaced with textual captions.
+              </p>
+              <p>
+                To bridge this gap, we present <img src="static/images/merit.png" style="width:1em;vertical-align: middle" alt="Logo"/><span class="mathvista" style="vertical-align: middle"><span class="name"></span></span>, which encompasses <b>$135,000$ products</b>, resulting in <b>$320,000$ retrieval pairs</b> across <b>$5$ languages</b> (English, Malay, Indonesian, Vietnamese, Thai), encompassing <b>$7$ distinct product retrieval scenarios</b>. Our dataset constitutes a structured query dataset, where each fundamental unit is a product comprising an image and its corresponding title generated by GPT-4o.
+              </p>
+              <p>
+                Each search query contains at least one positive sample. For convenience, the dataset is partitioned into training and test sets, containing <b>$310,000$</b> and <b>$10,000$</b> entries respectively.
+              </p>
+          </div>
+      </div>
+
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column">
+        <div class="content has-text-centered">
+          <img src="static/images/part1/stat.png" alt="data-overview" style="max-width: 75%;"/>
+          <p>
+            <b>(a) Dataset Statistics; (b) Summary of product categories and language distributions.</b>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered m-6">
+      <div class="column is-full has-text-centered content">
+        <h2 class="title is-3">Case</h2>
+        <div id="results-carousel" class="carousel results-carousel">
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/part1/case-4.png" alt="qs-len" class="stats-image"/>
+              <p>
+                A query case in <img src="static/images/merit.png" style="width:1em;vertical-align: middle" alt="Logo"/><span class="mathvista" style="vertical-align: middle"><span class="name"></span></span>.
+              </p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/part1/case-1.png" alt="qs-len" class="stats-image"/>
+              <p>
+                A query case in <img src="static/images/merit.png" style="width:1em;vertical-align: middle" alt="Logo"/><span class="mathvista" style="vertical-align: middle"><span class="name"></span></span>.
+              </p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/part1/case-3.png" alt="qs-len" class="stats-image"/>
+              <p>
+                A query case in <img src="static/images/merit.png" style="width:1em;vertical-align: middle" alt="Logo"/><span class="mathvista" style="vertical-align: middle"><span class="name"></span></span>.
+              </p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/part1/case-2.png" alt="qs-len" class="stats-image"/>
+              <p>
+                A query case in <img src="static/images/merit.png" style="width:1em;vertical-align: middle" alt="Logo"/><span class="mathvista" style="vertical-align: middle"><span class="name"></span></span>.
+              </p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/part1/case-5.png" alt="qs-len" class="stats-image"/>
+              <p>
+                A query case in <img src="static/images/merit.png" style="width:1em;vertical-align: middle" alt="Logo"/><span class="mathvista" style="vertical-align: middle"><span class="name"></span></span>.
+              </p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/part1/case-6.png" alt="qs-len" class="stats-image"/>
+              <p>
+                A query case in <img src="static/images/merit.png" style="width:1em;vertical-align: middle" alt="Logo"/><span class="mathvista" style="vertical-align: middle"><span class="name"></span></span>.
+              </p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/part1/case-7.png" alt="qs-len" class="stats-image"/>
+              <p>
+                A query case in <img src="static/images/merit.png" style="width:1em;vertical-align: middle" alt="Logo"/><span class="mathvista" style="vertical-align: middle"><span class="name"></span></span>.
+              </p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/part1/case-8.png" alt="qs-len" class="stats-image"/>
+              <p>
+                A query case in <img src="static/images/merit.png" style="width:1em;vertical-align: middle" alt="Logo"/><span class="mathvista" style="vertical-align: middle"><span class="name"></span></span>.
+              </p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/part1/case-9.png" alt="qs-len" class="stats-image"/>
+              <p>
+                A query case in <img src="static/images/merit.png" style="width:1em;vertical-align: middle" alt="Logo"/><span class="mathvista" style="vertical-align: middle"><span class="name"></span></span>.
+              </p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/part1/case-10.png" alt="qs-len" class="stats-image"/>
+              <p>
+                A query case in <img src="static/images/merit.png" style="width:1em;vertical-align: middle" alt="Logo"/><span class="mathvista" style="vertical-align: middle"><span class="name"></span></span>.
+              </p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/part1/case-11.png" alt="qs-len" class="stats-image"/>
+              <p>
+                A query case in <img src="static/images/merit.png" style="width:1em;vertical-align: middle" alt="Logo"/><span class="mathvista" style="vertical-align: middle"><span class="name"></span></span>.
+              </p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/part1/case-12.png" alt="qs-len" class="stats-image"/>
+              <p>
+                A query case in <img src="static/images/merit.png" style="width:1em;vertical-align: middle" alt="Logo"/><span class="mathvista" style="vertical-align: middle"><span class="name"></span></span>.
+              </p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/part1/case-13.png" alt="qs-len" class="stats-image"/>
+              <p>
+                A query case in <img src="static/images/merit.png" style="width:1em;vertical-align: middle" alt="Logo"/><span class="mathvista" style="vertical-align: middle"><span class="name"></span></span>.
+              </p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/part1/case-14.png" alt="qs-len" class="stats-image"/>
+              <p>
+                A query case in <img src="static/images/merit.png" style="width:1em;vertical-align: middle" alt="Logo"/><span class="mathvista" style="vertical-align: middle"><span class="name"></span></span>.
+              </p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/part1/case-15.png" alt="qs-len" class="stats-image"/>
+              <p>
+                A query case in <img src="static/images/merit.png" style="width:1em;vertical-align: middle" alt="Logo"/><span class="mathvista" style="vertical-align: middle"><span class="name"></span></span>.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Prat 2 -->
+<section class="hero is-light is-small">
+  <div class="hero-body has-text-centered">
+    <h3 class="title is-3 mathvista">How Far to <span class="name"></span>?</h3>
+  </div>
+</section>
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Main Results</h2>
+          <div class="content has-text-justified">
+            <p>
+              To evaluate the effectiveness of existing retrieval models in addressing the interleaved multi-condition semantic retrieval task, we conduct experiments on <b>$9$ state-of-the-art retrieval models</b>. The principal results are presented in our main results table.
+              <img src="static/images/merit.png" style="width:1em;vertical-align: middle" alt="Logo"/><span class="mathvista" style="vertical-align: middle"><span class="name"></span></span>
+              is divided into training and test sets, consisting of <b>$310,000$</b> and <b>$10,000$</b> queries respectively.
+            </p>
+          </div>
+      <br>
+      <div class="content has-text-centered">
+        <img src="static/images/part2/main.png" alt="grade-lv" width="90%"/>
+        <p>
+        <b>Comparative study of retrieval performance</b> on
+          <img src="static/images/merit.png" style="width:1em;vertical-align: middle" alt="Logo"/><span class="mathvista" style="vertical-align: middle"><span class="name"></span></span>.
+          "Seq", "Cat", and "Avg" denote sequential multi-image input, <br>
+          concatenated images as a single image input, and averaged embeddings, respectively.
+        </p>
+      </div>
+          <div class="content has-text-justified">
+            <p>
+              <b>Main Results.</b> Existing retrieval methods struggle to address interleaved multi-condition semantic tasks, with even the best Recall@1 being only <b>$12.05\%$</b>. Additionally, we identify several key insights:
+            </p>
+
+            <p>
+              <b>Visual Conditioning Necessity.</b> To verify the necessity of visual information, we conducted experiments using BGE-VL on CIRR, FashionIQ, and our dataset. When replacing images with their corresponding captions for retrieval, the performance on FashionIQ and CIRR does not significantly deteriorate. In contrast, we exhibit substantial performance degradation when either replacing images with their corresponding captions or removing product titles, with image removal resulting in a particularly severe decline of <b>$73.9\%$</b>. This demonstrates the effectiveness of our dataset, indicating that both images and product titles are indispensable components.
+            </p>
+
+            <p>
+              <b>Interleaving Support.</b> Concatenating multiple images into a single image significantly outperforms sequential input, with concatenation achieving a <b>$119.7\%$</b> improvement in R@5 over its sequential version. This occurs despite the fact that pre-trained MLLMs support interleaved image inputs. After training, sequence input performance improved by <b>$14.3\%$</b>, further validating our hypothesis. This underscores the significance of our dataset as the first interleaved semantic retrieval dataset.
+            </p>
+
+            <p>
+              <b>Out-of-Distribution Scenarios.</b> We evaluated Qwen2.5-VL on three types of OOD scenarios (Class OOD, Language OOD, and Attribute OOD). Specifically, performance in the Language OOD scenario shows a notable gap compared to full training; however, it still demonstrates substantial improvement over zero-shot performance. In both Class and Attribute OOD scenarios, the performance gap between OOD and full training is relatively small, reflecting the diversity of our dataset.
+            </p>
+            </div>
+    <div class="content has-text-centered">
+      <img src="static/images/part2/visual-neccessity.png" alt="grade-lv" width="65%"/>
+      <p>
+      <b>Visual Conditioning Necessity Test Results</b>.
+      </p>
+    </div>
+
+    <div class="content has-text-centered">
+      <img src="static/images/part2/ood.png" alt="grade-lv" width="65%"/>
+      <p>
+      <b>Out-of-Distribution Scenarios Results</b>.
+      </p>
+    </div>
+    <br>
+    <h2 class="title is-3">Error Analysis</h2>
+  <div class="content has-text-justified">
+    <p>
+      We examined why retrieval models perform poorly. First, we checked if performance varied by language, but found <b>little difference</b> - English showed no advantage despite being most common in training data.
+    </p>
+    <p>
+      We analyzed <b>500 queries</b> using two trained models (Qwen2.5-VL and InternVL 2.5). Experts categorized errors into <b>five types</b>.
+      Most errors involved <b>attributes and visual understanding</b>. Models focus too much on overall meaning and miss specific details, likely because they're trained mainly for retrieval.
+      Current <b>single-image datasets</b> also limit models from using their full ability to understand multiple images, leading to mistakes in identifying details like patterns.
+    </p>
+  </div>
+    <div class="content has-text-centered">
+      <img src="static/images/part2/error.png" alt="grade-lv" width="85%"/>
+      <p>
+        <b>(a)</b> Different Language's Performance on <img src="static/images/merit.png" style="width:1em;vertical-align: middle" alt="Logo"/><span class="mathvista" style="vertical-align: middle"><span class="name"></span></span> (R@1).
+        <b>(b)</b> Distribution of Error Types.
+      </p>
+    </div>
+  </div>
+    </div>
+</section>
+
+<!-- Prat 3 -->
+<section class="hero is-light is-small">
+  <div class="hero-body has-text-centered">
+    <h3 class="title is-3 mathvista"><img src="static/images/coral.png" style="width:1.5em;vertical-align: middle" alt="Logo"/> Coral</h3>
+  </div>
+</section>
+<section class="section">
+  <div class="container">
+    <!-- For words!-->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+      <div class="content has-text-justified">
+        <p>
+          Recognizing neglecting specific conditional elements in queries as a primary source of error,
+          we introduce <img src="static/images/coral.png" style="width:1em;vertical-align: middle" alt="Logo"/><span class="mathvista" style="vertical-align: middle">Coral</span> to enhance <b>MLLM-based retriever</b>
+          performance in addressing <b>interleaved multi-condition semantic retrieval</b>
+          tasks through the integration of <b>visual reconstruction</b>
+          during the fine-tuning process of the <b>MLLM-to-retrieval model adaptation</b>.
+        </p>
+      </div>
+
+    <br>
+    <div class="content has-text-centered">
+      <img src="static/images/part3/method.png" alt="grade-lv" width="70%"/>
+      <p>
+        <b>Overview for <img src="static/images/coral.png" style="width:1em;vertical-align: middle" alt="Logo"/><span class="mathvista" style="vertical-align: middle">Coral</span>.</b>
+        The loss function of <img src="static/images/coral.png" style="width:1em;vertical-align: middle" alt="Logo"/><span class="mathvista" style="vertical-align: middle">Coral</span> consists of three components:
+        <b>Contrastive Learning Loss</b> $\mathcal{L}_\mathrm{cl}$, <br>
+        <b>Vision Reconstruction Loss</b> $\mathcal{L}_\mathrm{mse}$, and <b>Masked Language Modeling Loss</b> $\mathcal{L}_\mathrm{mlm}$. During training,
+        <br>we reconstruct both the query and its corresponding positive sample.
+      </p>
+    </div>
+
+    <div class="content has-text-justified">
+      <p>
+        <b>Results lead to the following conclusions:</b>
+      </p>
+      <p>
+        <i>(i) Embedding reconstruction contributes significantly to retrieval performance.</i> Both partial feature reconstruction enhance model performance, with multimodal reconstruction yielding a <b>45.9% improvement</b> compared to contrastive learning alone.
+      </p>
+      <p>
+        <i>(ii) Multi-modal reconstruction outperforms partial reconstruction.</i> Comparing results reveal superior performance when reconstructing both modalities simultaneously.
+      </p>
+      <p>
+        <i>(iii) Sequential input surpasses image concatenation.</i> We observe that sequential inputs achieve higher performance. We hypothesize that sequential representation preserves more information than image concatenation.
+      </p>
+      <p>
+        <i>(iv) Full parameter fine-tuning yields optimal results.</i> Due to the substantial divergence between retrieval tasks and pre-training objectives, full parameter fine-tuning generally produces better outcomes.
+      </p>
+    </div>
+
+    <br>
+    <div class="content has-text-centered">
+      <img src="static/images/part3/ablation.png" alt="grade-lv" width="70%"/>
+      <p>
+        <b>Ablation results of existing methods and
+        <b><img src="static/images/coral.png" style="width:1em;vertical-align: middle" alt="Logo"/><span class="mathvista" style="vertical-align: middle">Coral</span></b>
+        on <b><img src="static/images/merit.png" style="width:1em;vertical-align: middle" alt="Logo"/><span class="mathvista" style="vertical-align: middle"><span class="name"></span></span></b> using <b>Qwen2.5-VL</b>.
+      </b></p>
+    </div>
+
+    <div class="content has-text-justified">
+      <p>
+        <b>Results on $8$ Retrieval Tasks.</b>
+        To further validate the efficacy of <img src="static/images/coral.png" style="width:1em;vertical-align: middle" alt="Logo"/><span class="mathvista" style="vertical-align: middle">Coral</span>,
+        we conducted evaluations on <b>$8$ retrieval benchmarks</b>.
+        Comparative analyses between our approach and other
+        foundational models demonstrate that our method achieves consistent improvements across these
+        eight retrieval tasks, with particularly notable performance on <b>VisDial</b>,
+        where our approach exhibits a <b>$181\%$ enhancement</b> over the baseline.
+      </p>
+    </div>
+    <br>
+    <div class="content has-text-centered">
+      <img src="static/images/part3/eight.png" alt="grade-lv" width="70%"/>
+      <p>
+        <b>Comparisons of our method with other methods on eight established retrieval tasks.</b>
+        <br>We take zero-shot Qwen2-VL as our baseline. CL denotes contrast learning.
+      </p>
+    </div>
+  </div>
+</div>
+</section>
+
+
+<footer class="footer">
+    <div class="content has-text-centered">
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+<p style="font-size: 14px;">
+  This website is adapted from <a href="https://nerfies.github.io/">Nerfies</a>, licensed under a <a rel="license"
+                                              href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+  Commons Attribution-ShareAlike 4.0 International License</a>.
+</p>
+        </div>
+      </div>
+    </div>
+</footer>
+
+</body>
+</html>
